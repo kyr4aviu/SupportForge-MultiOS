@@ -1,7 +1,7 @@
 from __future__ import annotations
 from typing import Any
 
-RULESET_VERSION = "2026.08-beta1"
+RULESET_VERSION = "2026.08-beta2"
 
 def evaluate_health(snapshot: dict[str, Any]) -> dict[str, Any]:
     findings: list[dict[str, str]] = []
@@ -13,7 +13,7 @@ def evaluate_health(snapshot: dict[str, Any]) -> dict[str, Any]:
     if _failed(services):
         findings.append(_f("warning","services","SF-SVC-001",
                            "Service diagnostic command failed or is unavailable"))
-    elif _output(services):
+    elif _service_failures_present(services):
         findings.append(_f("warning","services","SF-SVC-002",
                            "Potential failed/stopped automatic services detected"))
 
@@ -60,3 +60,12 @@ def _failed(value: Any) -> bool:
 
 def _output(value: Any) -> bool:
     return isinstance(value, dict) and bool(str(value.get("output","")).strip())
+
+
+def _service_failures_present(value: Any) -> bool:
+    if not isinstance(value, dict):
+        return False
+    failed_count = value.get("failed_count")
+    if isinstance(failed_count, int):
+        return failed_count > 0
+    return _output(value)

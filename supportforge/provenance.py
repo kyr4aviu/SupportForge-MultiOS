@@ -1,4 +1,6 @@
 from __future__ import annotations
+import hashlib
+import json
 from datetime import datetime, timezone
 from typing import Any
 
@@ -10,13 +12,23 @@ def evidence_record(
     privilege: str = "user",
     category: str = "system",
 ) -> dict[str, Any]:
+    serialized = json.dumps(
+        data, sort_keys=True, ensure_ascii=False, default=str,
+    ).encode("utf-8")
+    data_summary: dict[str, Any] = {
+        "type": type(data).__name__,
+        "size_bytes": len(serialized),
+        "sha256": hashlib.sha256(serialized).hexdigest(),
+    }
+    if isinstance(data, dict):
+        data_summary["keys"] = sorted(str(key) for key in data)
     return {
         "source": source,
         "category": category,
         "privilege": privilege,
         "collected_at_utc": datetime.now(timezone.utc).isoformat(),
         "command": command or [],
-        "data": data,
+        "data_summary": data_summary,
     }
 
 def provenance_summary(records: list[dict[str, Any]]) -> dict[str, Any]:

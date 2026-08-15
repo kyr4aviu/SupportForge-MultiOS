@@ -8,6 +8,13 @@ from typing import Any
 _EMAIL_RE = re.compile(r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b")
 _MAC_RE = re.compile(r"\b(?:[0-9A-Fa-f]{2}[:-]){5}[0-9A-Fa-f]{2}\b")
 _IPV4_RE = re.compile(r"\b(?:\d{1,3}\.){3}\d{1,3}\b")
+_POSIX_HOME_RE = re.compile(r"(?P<prefix>/(?:Users|home)/)(?P<user>[^/\s\"']+)")
+_WINDOWS_HOME_RE = re.compile(
+    r"(?P<prefix>\b[A-Za-z]:\\Users\\)(?P<user>[^\\\s\"']+)",
+    re.IGNORECASE,
+)
+_IDENTITY_KEYS = {"user", "username", "account", "account_name", "owner"}
+_USER_FLAGS = {"-u", "-U", "--user", "--username"}
 
 def _stable_token(value: str, label: str) -> str:
     digest = hashlib.sha256(value.encode("utf-8", errors="ignore")).hexdigest()[:10]
@@ -18,6 +25,12 @@ def redact_text(text: str, mode: str = "standard") -> str:
         return text
     text = _EMAIL_RE.sub(lambda m: _stable_token(m.group(0), "email"), text)
     text = _MAC_RE.sub(lambda m: _stable_token(m.group(0), "mac"), text)
+    text = _POSIX_HOME_RE.sub(
+        lambda m: m.group("prefix") + _stable_token(m.group("user"), "user"), text
+    )
+    text = _WINDOWS_HOME_RE.sub(
+        lambda m: m.group("prefix") + _stable_token(m.group("user"), "user"), text
+    )
 
     def repl_ipv4(match: re.Match[str]) -> str:
         raw = match.group(0)
@@ -45,11 +58,22 @@ def redact_payload(payload: Any, mode: str = "standard") -> Any:
             key_lower = str(key).lower()
             if key_lower in {"hostname", "fqdn"}:
                 out[key] = _stable_token(str(value), key_lower)
+            elif key_lower in _IDENTITY_KEYS and isinstance(value, str):
+                out[key] = _stable_token(value, "user")
             else:
                 out[key] = redact_payload(value, mode)
         return out
     if isinstance(payload, list):
-        return [redact_payload(item, mode) for item in payload]
+        out = []
+        redact_next_user = False
+        for item in payload:
+            if redact_next_user and isinstance(item, str):
+                out.append(_stable_token(item, "user"))
+                redact_next_user = False
+                continue
+            out.append(redact_payload(item, mode))
+            redact_next_user = isinstance(item, str) and item in _USER_FLAGS
+        return out
     if isinstance(payload, str):
         return redact_text(payload, mode)
     return payload

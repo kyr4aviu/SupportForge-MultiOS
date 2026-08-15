@@ -11,7 +11,7 @@ def collect_snapshot():
 
     data.update({
         "services_failed": run_readonly(
-            ["systemctl", "--failed", "--no-pager", "--plain"],
+            ["systemctl", "--failed", "--no-pager", "--plain", "--no-legend"],
             timeout=8,
         ),
         "network": run_readonly(["ip", "-brief", "address"]),

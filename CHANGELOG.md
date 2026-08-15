@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+- Redact local home-directory and database-user identifiers from shared reports.
+- Bound macOS unified-log evidence to keep incident bundles compact.
+- Store provenance hashes and metadata without duplicating raw evidence.
+- Report only launchd jobs with nonzero exit status as service findings.
+
 ## SupportForge Multi-OS 1.0.0 — 2026-08-15
 
 - Added native cross-platform workstation diagnostics and health findings.

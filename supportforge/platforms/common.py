@@ -21,7 +21,11 @@ def base_snapshot() -> dict[str, Any]:
     }
 
 
-def run_readonly(args: list[str], timeout: float = 10.0) -> dict[str, Any]:
+def run_readonly(
+    args: list[str],
+    timeout: float = 10.0,
+    max_output_chars: int | None = None,
+) -> dict[str, Any]:
     if not args or not all(isinstance(x, str) and x for x in args):
         raise ValueError("Command arguments must be a non-empty list of strings")
     try:
@@ -33,12 +37,16 @@ def run_readonly(args: list[str], timeout: float = 10.0) -> dict[str, Any]:
             check=False,
             shell=False,
         )
+        output, output_meta = _bounded_text(proc.stdout, max_output_chars)
+        stderr, stderr_meta = _bounded_text(proc.stderr, max_output_chars)
         return {
             "available": True,
             "returncode": proc.returncode,
-            "output": proc.stdout,
-            "stderr": proc.stderr,
+            "output": output,
+            "stderr": stderr,
             "command": args,
+            **output_meta,
+            **{f"stderr_{key}": value for key, value in stderr_meta.items()},
         }
     except FileNotFoundError:
         return {
@@ -49,12 +57,14 @@ def run_readonly(args: list[str], timeout: float = 10.0) -> dict[str, Any]:
             "command": args,
         }
     except subprocess.TimeoutExpired as exc:
+        output, output_meta = _bounded_text(_as_text(exc.stdout), max_output_chars)
         return {
             "available": True,
             "returncode": 124,
-            "output": _as_text(exc.stdout),
+            "output": output,
             "stderr": f"Command timed out after {timeout} seconds",
             "command": args,
+            **output_meta,
         }
     except OSError as exc:
         code = 127 if getattr(exc, "errno", None) == 2 else 126
@@ -84,3 +94,13 @@ def _as_text(value: object) -> str:
     if isinstance(value, bytes):
         return value.decode(errors="replace")
     return str(value)
+
+
+def _bounded_text(text: str, limit: int | None) -> tuple[str, dict[str, Any]]:
+    if limit is None or len(text) <= limit:
+        return text, {}
+    marker = f"[SupportForge truncated {len(text) - limit} earlier characters]\n"
+    return marker + text[-limit:], {
+        "output_truncated": True,
+        "original_output_chars": len(text),
+    }

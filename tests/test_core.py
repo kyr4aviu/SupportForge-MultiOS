@@ -17,6 +17,7 @@ from supportforge.gui import (
 )
 from supportforge.permissions import get_permissions
 from supportforge.provenance import evidence_record, provenance_summary
+from supportforge.redaction import redact_payload
 from supportforge.workstation import diff_snapshots
 
 class CoreTests(unittest.TestCase):
@@ -71,6 +72,35 @@ class CoreTests(unittest.TestCase):
             self.assertTrue(get_permissions(name))
         rec=evidence_record("system", {}, category="system")
         self.assertEqual(provenance_summary([rec])["record_count"], 1)
+        self.assertNotIn("data", rec)
+        self.assertEqual(rec["data_summary"]["type"], "dict")
+        self.assertEqual(len(rec["data_summary"]["sha256"]), 64)
+
+    def test_strict_redaction_removes_home_paths_and_command_users(self):
+        safe = redact_payload({
+            "user": "d",
+            "output": "opened /Users/d/private/report.txt",
+            "command": ["psql", "-U", "d", "--file", "/Users/d/query.sql"],
+        }, "strict")
+        encoded = json.dumps(safe)
+        self.assertNotIn("/Users/d", encoded)
+        self.assertNotIn('"user": "d"', encoded)
+        self.assertNotIn('"-U", "d"', encoded)
+        self.assertIn("<user:", encoded)
+
+    def test_service_output_with_zero_failed_count_is_healthy(self):
+        result = evaluate_health({
+            "supported": True,
+            "services": {
+                "available": True,
+                "returncode": 0,
+                "output": "ordinary service listing",
+                "failed_count": 0,
+            },
+            "logs": {}, "docker": {"skipped": True},
+            "security": {"findings": []},
+        })
+        self.assertEqual(result["state"], "healthy")
 
     def test_postgres_snapshot_is_included_in_exports(self):
         workstation = {"schema": "supportforge.workstation.snapshot.v1"}
