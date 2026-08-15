@@ -1,2 +1,2 @@
-"""SupportForge Multi-OS diagnostic workstation."""
-__version__ = "1.0.1"
+"""SupportForge MultiOS diagnostic workstation."""
+__version__ = "1.0.2"

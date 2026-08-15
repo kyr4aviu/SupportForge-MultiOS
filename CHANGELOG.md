@@ -1,13 +1,20 @@
 # Changelog
 
-## SupportForge Multi-OS 1.0.1 — 2026-08-16
+## SupportForge MultiOS 1.0.2 — 2026-08-16
+
+- Renamed the product and repository presentation to SupportForge MultiOS.
+- Renamed and re-signed the macOS launcher bundle.
+- Reconciled installation, architecture, roadmap, security, and validation docs.
+- Removed obsolete commands, roadmap entries, and unsupported feature claims.
+
+## SupportForge MultiOS 1.0.1 — 2026-08-16
 
 - Redact local home-directory and database-user identifiers from shared reports.
 - Bound macOS unified-log evidence to keep incident bundles compact.
 - Store provenance hashes and metadata without duplicating raw evidence.
 - Report only launchd jobs with nonzero exit status as service findings.
 
-## SupportForge Multi-OS 1.0.0 — 2026-08-15
+## SupportForge MultiOS 1.0.0 — 2026-08-15
 
 - Added native cross-platform workstation diagnostics and health findings.
 - Added Docker Desktop and PostgreSQL diagnostics.
@@ -16,5 +23,5 @@
 - Added a double-clickable macOS launcher with a native application icon.
 - Validated the macOS Intel build on macOS 14 with Python 3.13 and Tk 8.6.
 
-Windows and Linux launchers and platform validation remain pending testing on
-their respective target systems.
+Native Windows and Linux launchers remain pending validation on their respective
+target systems.

@@ -1,18 +1,19 @@
 # Lightweight Linux GUI test
 
-This image is an Alpine Linux GUI smoke-test environment for SupportForge. It
-uses Xvfb, Openbox, x11vnc, and noVNC instead of a full desktop distribution.
+This image is an Alpine Linux GUI smoke-test environment for SupportForge
+MultiOS. It uses Xvfb, Openbox, x11vnc, and noVNC instead of a full desktop
+distribution.
 
 ## Build and run
 
 From the repository root:
 
 ```sh
-docker build -f deployment/linux-gui-test/Dockerfile -t supportforge-linux-gui:1.0 .
+docker build -f deployment/linux-gui-test/Dockerfile -t supportforge-linux-gui:1.0.2 .
 docker run --rm -d \
   --name supportforge-linux-gui \
   -p 127.0.0.1:6080:6080 \
-  supportforge-linux-gui:1.0
+  supportforge-linux-gui:1.0.2
 ```
 
 Open:

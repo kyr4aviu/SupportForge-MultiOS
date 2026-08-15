@@ -1,4 +1,4 @@
-# Offline packaging
+# Packaging
 
 Build only in a pre-provisioned offline environment. SupportForge does not fetch
 build dependencies.

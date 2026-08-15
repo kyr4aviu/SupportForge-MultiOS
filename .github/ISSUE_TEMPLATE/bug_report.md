@@ -9,10 +9,10 @@ about: Report a reproducible SupportForge problem
 - Python version:
 - Operating system:
 
-## Command
+## Reproduction steps
 
 ```bash
-supportforge ...
+python -m supportforge.gui --headless
 ```
 
 ## Expected behavior

@@ -36,7 +36,7 @@ from .workstation import (
     save_snapshot,
 )
 
-PRODUCT_NAME = "SupportForge Multi-OS"
+PRODUCT_NAME = "SupportForge MultiOS"
 APP_TITLE = f"{PRODUCT_NAME} {__version__}"
 
 
@@ -715,7 +715,7 @@ def _flatten_comparison(path, value, rows):
 
 
 def main(argv: list[str] | None = None):
-    parser = argparse.ArgumentParser(description="SupportForge Multi-OS diagnostic workstation")
+    parser = argparse.ArgumentParser(description="SupportForge MultiOS diagnostic workstation")
     parser.add_argument(
         "--headless",
         action="store_true",
