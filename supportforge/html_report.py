@@ -36,7 +36,7 @@ def generate_html_report(snapshot: dict[str, Any], output: Path, redaction: str 
         )
 
     doc = f"""<!doctype html>
-<html><head><meta charset="utf-8"><title>SupportForge Multi-OS Incident Report</title>
+<html><head><meta charset="utf-8"><title>SupportForge MultiOS Incident Report</title>
 <style>
 :root{{font-family:system-ui,-apple-system,Segoe UI,sans-serif;color-scheme:light dark}}
 body{{max-width:1200px;margin:32px auto;padding:0 22px;line-height:1.45}}
@@ -49,7 +49,7 @@ pre{{white-space:pre-wrap;overflow-wrap:anywhere;padding:14px;border:1px solid #
 details{{margin:10px 0}} summary{{font-weight:700;cursor:pointer}}
 .meta{{opacity:.75}} .foot{{margin-top:30px;opacity:.7;font-size:.9rem}}
 </style></head><body>
-<h1>SupportForge Multi-OS Incident Report</h1>
+<h1>SupportForge MultiOS Incident Report</h1>
 <p class="meta">Schema: {_h(safe.get("schema",""))}<br>
 Generated: {_h(safe.get("generated_at_utc",""))}<br>
 Platform: {_h(safe.get("platform",""))}</p>
@@ -67,7 +67,7 @@ Platform: {_h(safe.get("platform",""))}</p>
 
 <h2>System</h2><table>{sys_rows}</table>
 <h2>Evidence</h2>{''.join(sections)}
-<p class="foot">Generated locally by SupportForge Multi-OS. Export redaction profile: {_h(redaction)}.</p>
+<p class="foot">Generated locally by SupportForge MultiOS. Export redaction profile: {_h(redaction)}.</p>
 </body></html>"""
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(doc, encoding="utf-8")

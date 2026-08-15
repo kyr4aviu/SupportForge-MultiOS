@@ -1,28 +1,33 @@
-# SupportForge Multi-OS 1.0 Architecture
+# Architecture
 
 ```text
-GUI
- |
+Tk GUI
+  |
 Workstation core
- |-- health rules
- |-- evidence/provenance
- |-- history/diff
- |-- redaction/report export
- |
+  |-- normalized snapshot schema
+  |-- health rules
+  |-- searchable evidence
+  |-- local history and comparison
+  |-- redaction and report export
+  |
 Platform adapter
- |-- Linux
- |-- Windows
- `-- macOS
+  |-- macOS
+  |-- Linux
+  `-- Windows
 
-Optional collectors:
- |-- Docker
- `-- PostgreSQL
+Optional collectors
+  |-- Docker
+  `-- PostgreSQL
 ```
 
-The host collector is native. Docker is optional and is not used as a privileged
-bridge into the host operating system.
+Platform adapters execute fixed, read-only commands without `shell=True` and
+normalize their results into one workstation snapshot. Docker and PostgreSQL
+collectors are optional and report unavailable tools or permissions explicitly.
 
-The GUI and workstation core are the product boundary. Legacy 1.x CLI workflows,
-plugin execution, SBOM/SARIF generation, SMART tooling, policy engines, and
-release-manifest features were deliberately removed from Multi-OS 1.0 to reduce
-attack surface and maintenance cost.
+Snapshots remain local. History is stored under `.supportforge/history` in the
+current user's home directory. Shared exports pass through a redaction profile;
+incident bundles contain redacted JSON, redacted HTML, and a SHA-256 manifest.
+
+Provenance records contain source metadata and evidence hashes rather than a
+second copy of raw diagnostic output. Large macOS unified-log output is bounded
+to keep reports usable.

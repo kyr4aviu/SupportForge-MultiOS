@@ -1,4 +1,4 @@
-# SupportForge Multi-OS 1.0 Permissions Matrix
+# Permissions Matrix
 
 SupportForge does not automatically elevate privileges.
 

@@ -1,24 +1,32 @@
-# SupportForge Multi-OS 1.0
+# SupportForge MultiOS
 
-SupportForge is an offline-first cross-platform desktop workstation for technical
-support diagnostics.
+SupportForge MultiOS is an offline-first desktop application for collecting,
+reviewing, comparing, and exporting technical-support diagnostics on macOS,
+Linux, and Windows. Version 1.0.1 uses only the Python standard library at
+runtime and does not send telemetry or diagnostic data to a cloud service.
 
-The Multi-OS 1.0 release intentionally has a narrow scope:
+## Features
 
-- native GUI
-- host system/network/storage/log diagnostics
-- security-state collection
-- optional Docker status
-- optional PostgreSQL status
-- health findings
-- searchable evidence
-- local scan history and snapshot comparison
-- redacted JSON / HTML / incident bundle export
+- Native Tk desktop interface
+- System, network, storage, service, and operating-system log diagnostics
+- Security-state collection
+- Optional Docker and PostgreSQL diagnostics
+- Health findings and searchable evidence
+- Local snapshot history with side-by-side comparison
+- Strict-redacted JSON and HTML incident bundles with SHA-256 manifests
 
-SupportForge does not automatically elevate privileges, does not require a cloud
-service, and does not grant Docker privileged host access.
+SupportForge never elevates privileges automatically. Unavailable or restricted
+sources are reported without weakening host security controls.
 
-## Run from source
+## Requirements
+
+- Python 3.10 or newer with Tk support
+- Optional: Docker CLI and access to the Docker daemon
+- Optional: PostgreSQL `pg_isready` and `psql` tools
+
+## Install and run
+
+From a fresh clone on macOS or Linux:
 
 ```bash
 python3 -m venv .venv
@@ -26,22 +34,33 @@ python3 -m venv .venv
 .venv/bin/python -m supportforge.gui
 ```
 
-## Run on macOS
+On Windows PowerShell:
 
-After creating `.venv` with the commands above, double-click
-`Run SupportForge Multi-OS.app` in the project folder. The launcher uses the
-project-local environment and automatically discovers Docker Desktop and
-Postgres.app command-line tools.
+```powershell
+py -m venv .venv
+.venv\Scripts\python.exe -m pip install -e .
+.venv\Scripts\python.exe -m supportforge.gui
+```
+
+On macOS, after creating `.venv`, you can instead double-click
+`Run SupportForge MultiOS.app`. The launcher discovers Docker Desktop and
+Postgres.app command-line tools automatically.
 
 ## Validate
 
 ```bash
-python3 -m unittest discover -s tests -v
-python3 scripts/verify_release.py
-python3 scripts/validate_host.py
+.venv/bin/python -m unittest discover -s tests -v
+.venv/bin/python scripts/verify_release.py
+.venv/bin/python scripts/validate_host.py
 ```
 
-Windows and macOS must be validated on actual target hosts before their binaries
-are described as validated releases.
+The Intel macOS build is validated on macOS 14. The Alpine container provides a
+Linux GUI smoke test; native Linux and Windows host validation remains required
+before publishing platform-specific launchers.
 
-See `docs/ARCHITECTURE.md` and `docs/PERMISSIONS_MATRIX.md`.
+See [Architecture](docs/ARCHITECTURE.md),
+[Permissions](docs/PERMISSIONS_MATRIX.md), and [Security](SECURITY.md).
+
+## License
+
+SupportForge MultiOS is released under the [MIT License](LICENSE).

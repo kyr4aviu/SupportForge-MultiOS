@@ -14,13 +14,14 @@ Thank you for considering a contribution.
 - Tests for every new command or regression fix
 - Documentation for all user-visible behavior
 
-## Offline development setup
+## Development setup
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
+python -m pip install -e .
 python3 -m unittest discover -s tests -v
-python3 -m supportforge --help
+python3 -m supportforge.gui --headless
 ```
 
 ## Pull request checklist
