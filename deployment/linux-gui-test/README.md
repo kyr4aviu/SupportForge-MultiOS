@@ -9,11 +9,11 @@ distribution.
 From the repository root:
 
 ```sh
-docker build -f deployment/linux-gui-test/Dockerfile -t supportforge-linux-gui:1.0.1 .
+docker build -f deployment/linux-gui-test/Dockerfile -t supportforge-linux-gui:1.0.2 .
 docker run --rm -d \
   --name supportforge-linux-gui \
   -p 127.0.0.1:6080:6080 \
-  supportforge-linux-gui:1.0.1
+  supportforge-linux-gui:1.0.2
 ```
 
 Open:

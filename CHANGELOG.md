@@ -1,5 +1,12 @@
 # Changelog
 
+## SupportForge MultiOS 1.0.2 — 2026-08-16
+
+- Renamed the product and repository presentation to SupportForge MultiOS.
+- Renamed and re-signed the macOS launcher bundle.
+- Reconciled installation, architecture, roadmap, security, and validation docs.
+- Removed obsolete commands, roadmap entries, and unsupported feature claims.
+
 ## SupportForge MultiOS 1.0.1 — 2026-08-16
 
 - Redact local home-directory and database-user identifiers from shared reports.
