@@ -1,0 +1,16 @@
+#!/bin/zsh
+
+set -u
+
+launcher_dir="${0:A:h}"
+project_root="${launcher_dir:h:h:h}"
+app_python="$project_root/.venv/bin/python"
+
+if [[ ! -x "$app_python" ]]; then
+  /usr/bin/osascript -e 'display alert "SupportForge cannot start" message "The project virtual environment is missing. Reinstall SupportForge in .venv and try again." as critical'
+  exit 1
+fi
+
+export PATH="/usr/local/bin:/Applications/Postgres.app/Contents/Versions/latest/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+cd "$project_root" || exit 1
+exec "$app_python" -m supportforge.gui

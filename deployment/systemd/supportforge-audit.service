@@ -1,0 +1,20 @@
+[Unit]
+Description=SupportForge scheduled security audit
+After=local-fs.target
+
+[Service]
+Type=oneshot
+User=supportforge
+Group=supportforge
+WorkingDirectory=/opt/supportforge
+ExecStart=/opt/supportforge/.venv/bin/python -m supportforge workflow \
+  --profile security \
+  --output /var/lib/supportforge/audits/latest
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/supportforge
+RestrictAddressFamilies=AF_UNIX
+LockPersonality=true
+MemoryDenyWriteExecute=true

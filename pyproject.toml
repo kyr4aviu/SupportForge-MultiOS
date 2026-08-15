@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "supportforge"
+version = "1.0.0"
+description = "SupportForge Multi-OS offline-first technical support workstation"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+  { name = "Dmytro Pavlov", email = "kyr4aviu@gmail.com" }
+]
+license = { text = "MIT" }
+keywords = ["technical-support", "diagnostics", "linux", "windows", "macos", "gui"]
+
+[project.scripts]
+supportforge-gui = "supportforge.gui:main"
+
+[tool.setuptools.packages.find]
+include = ["supportforge*"]

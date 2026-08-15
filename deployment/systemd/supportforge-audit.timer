@@ -1,0 +1,10 @@
+[Unit]
+Description=Run SupportForge audit monthly
+
+[Timer]
+OnCalendar=monthly
+Persistent=true
+RandomizedDelaySec=30m
+
+[Install]
+WantedBy=timers.target

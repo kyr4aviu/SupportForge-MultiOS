@@ -1,0 +1,13 @@
+.git
+.github
+.venv
+*.egg-info
+**/__pycache__
+*.pyc
+*.zip
+*.html
+*.json
+Run SupportForge Multi-OS.app
+assets
+build
+dist
