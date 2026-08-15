@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## SupportForge Multi-OS 1.0.1 — 2026-08-16
 
 - Redact local home-directory and database-user identifiers from shared reports.
 - Bound macOS unified-log evidence to keep incident bundles compact.
