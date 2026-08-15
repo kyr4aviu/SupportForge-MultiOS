@@ -2,7 +2,7 @@
 
 SupportForge MultiOS is an offline-first desktop application for collecting,
 reviewing, comparing, and exporting technical-support diagnostics on macOS,
-Linux, and Windows. Version 1.0.2 uses only the Python standard library at
+Linux, and Windows. Version 1.0.3 uses only the Python standard library at
 runtime and does not send telemetry or diagnostic data to a cloud service.
 
 ## Features

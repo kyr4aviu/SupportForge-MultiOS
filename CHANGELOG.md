@@ -1,5 +1,11 @@
 # Changelog
 
+## SupportForge MultiOS 1.0.3 — 2026-08-16
+
+- Restored the complete canonical MIT License text for GitHub identification.
+- Declared SPDX MIT metadata and included the license in Python packages.
+- Added a verified downloadable ZIP package to the GitHub release.
+
 ## SupportForge MultiOS 1.0.2 — 2026-08-16
 
 - Renamed the product and repository presentation to SupportForge MultiOS.
